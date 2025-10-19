@@ -17,19 +17,14 @@ const App = () => {
 
   return (
     <div className="w-full h-screen w-[1200px] min-w-[1200px] mx-auto flex flex-col">
-      {/* Navbar and Filter */}
-      <div className="flex flex-col">
-        <Navbar onCreate={() => setShowCreateJob(true)} />
-        {/* ✅ Pass filters and setFilters */}
-        <SearchFilter filters={filters} setFilters={setFilters} />
-      </div>
+      <Navbar onCreate={() => setShowCreateJob(true)} />
 
-      {/* Job Display with filters applied */}
-      <div className="w-full bg-gray-100 flex-1 overflow-y-auto mt-4">
+      <SearchFilter filters={filters} setFilters={setFilters} />
+
+      <div className="w-full bg-gray-100 mt-4">
         <JobDisplay filters={filters} />
       </div>
 
-      {/* Modal */}
       {showCreateJob && <CreateJob onClose={() => setShowCreateJob(false)} />}
     </div>
   );

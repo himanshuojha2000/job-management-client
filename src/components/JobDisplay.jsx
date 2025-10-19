@@ -54,7 +54,7 @@ const JobDisplay = ({ filters }) => {
   }, []);
 
   return (
-    <div className="p-6  grid grid-cols-1  sm:grid-cols-2 md:grid-cols-4 gap-2">
+    <div className="p-6  grid grid-cols-1  sm:grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-8 m-8">
       {filteredJobs.map((job, index) => {
         const image = jobImage[index % jobImage.length];
 
