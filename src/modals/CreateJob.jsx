@@ -14,7 +14,7 @@ const CreateJob = ({ onClose }) => {
 
   const handlePublish = async () => {
     try {
-      const res = await fetch("http://localhost:5000/jobs", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/jobs`, {
         method: "POST",
         headers: { "Content-Type": "application/json" }, // corrected
         body: JSON.stringify({
