@@ -33,7 +33,9 @@ const CreateJob = ({ onClose }) => {
 
       const data = await res.json();
       console.log("Job published:", data);
-      alert("✅ Job published successfully!");
+      alert(
+        "Job published successfully, Please Refresh the page to commit changes"
+      );
       onClose(); // close modal after publishing
     } catch (err) {
       console.error("Error publishing job:", err);

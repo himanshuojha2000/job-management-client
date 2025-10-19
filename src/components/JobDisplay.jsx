@@ -105,7 +105,7 @@ const JobDisplay = ({ filters }) => {
                   </div>
                 </div>
 
-                <ul className="list-disc pl-5 text-[#555555] text-sm font-medium space-y-1">
+                <ul className="list-disc pl-5 text-[#555555] text-sm font-medium  break-words space-y-1">
                   {job.description.split("\n").map((point, index) => (
                     <li key={index}>{point}</li>
                   ))}
