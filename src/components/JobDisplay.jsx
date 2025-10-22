@@ -7,6 +7,7 @@ import clip2 from "../assets/clip2.png";
 import clip3 from "../assets/clip3.png";
 
 const JobDisplay = ({ filters }) => {
+  const [jobs, setJobs] = useState([]);
   const timeAgo = (postedTime) => {
     const now = new Date();
     const posted = new Date(postedTime);
@@ -17,27 +18,24 @@ const JobDisplay = ({ filters }) => {
     else if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`; // hours
     else return `${Math.floor(diff / 86400)}d ago`; // days
   };
-  const [jobs, setJobs] = useState([]);
 
-  const filteredJobs = jobs.filter((job) => {
-    const maxSalary = parseInt(job.salary_max.toString().replace(/,/g, ""), 10);
+  const filteredJobs = Array.isArray(jobs)
+    ? jobs.filter((job) => {
+        const maxSalary = parseInt(
+          job.salary_max.toString().replace(/,/g, ""),
+          10
+        );
+        const monthlySalary = maxSalary / 12;
 
-    // Convert to monthly salary
-    const monthlySalary = maxSalary / 12;
-
-    console.log({
-      title: job.title,
-      job_type: job.job_type,
-      salary_max: job.salary_max,
-    });
-    return (
-      job.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) &&
-      (filters.location === "" ||
-        job.location.toLowerCase() === filters.location.toLowerCase()) &&
-      (filters.jobType === "" || job.job_type === filters.jobType) &&
-      (filters.salary === 0 || monthlySalary <= filters.salary) // 0 = show all
-    );
-  });
+        return (
+          job.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) &&
+          (filters.location === "" ||
+            job.location.toLowerCase() === filters.location.toLowerCase()) &&
+          (filters.jobType === "" || job.job_type === filters.jobType) &&
+          (filters.salary === 0 || monthlySalary <= filters.salary)
+        );
+      })
+    : [];
   const jobImage = [job1, job2, job3];
 
   useEffect(() => {
@@ -45,11 +43,19 @@ const JobDisplay = ({ filters }) => {
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/jobs`);
         const data = await res.json();
-        setJobs(data);
+
+        if (!Array.isArray(data)) {
+          console.error("❌ Expected an array of jobs but got:", data);
+          setJobs([]); // prevent crash
+        } else {
+          setJobs(data);
+        }
       } catch (err) {
-        console.error("Error Fetching jobs", err);
+        console.error("Error fetching jobs:", err);
+        setJobs([]); // prevent crash
       }
     };
+
     fetchJobs();
   }, []);
 
